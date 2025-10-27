@@ -32,7 +32,7 @@ All rights reserved. This project and its contents are protected by copyright la
 ### Contact
 
 For permission requests or licensing inquiries, please contact the project owner through the email address provided in the original communication.
-
+robertionutfundulea@gmail.com
 ---
 
 **Effective Date**: October 27, 2025
