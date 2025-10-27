@@ -29,14 +29,17 @@ class WebhookController {
       // Generate AI summary
       const summary = await this.summarizationService.summarize(ticket);
 
-      // Post to Zendesk (skip in mock mode without credentials)
-      if (!config.ai.useMock || this.zendeskService.isConfigured()) {
+      // Post to Zendesk when credentials are available
+      if (this.zendeskService.isConfigured()) {
         await this.zendeskService.addSummaryNote(ticket.id, summary);
       } else {
-        logger.info('Mock mode: Skipping Zendesk API call');
-        logger.debug('Would have posted summary', { 
+        logger.info('Zendesk integration not configured - skipping API call', {
           ticketId: ticket.id,
-          summaryPreview: summary.substring(0, 100) 
+          isMockMode: config.ai.useMock
+        });
+        logger.debug('Would have posted summary', {
+          ticketId: ticket.id,
+          summaryPreview: summary.substring(0, 100)
         });
       }
 

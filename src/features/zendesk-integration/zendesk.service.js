@@ -8,7 +8,11 @@ const { config } = require('../../config');
  */
 class ZendeskService {
   constructor() {
-    this.client = new ZendeskClient(config.zendesk);
+    if (this.isConfigured()) {
+      this.client = new ZendeskClient(config.zendesk);
+    } else {
+      this.client = null;
+    }
   }
 
   /**
@@ -48,7 +52,11 @@ class ZendeskService {
    * Check if Zendesk integration is configured
    */
   isConfigured() {
-    return !!(config.zendesk.subdomain && config.zendesk.email && config.zendesk.apiToken);
+    return config.zendesk.enabled && Boolean(
+      config.zendesk.subdomain &&
+      config.zendesk.email &&
+      config.zendesk.apiToken
+    );
   }
 }
 

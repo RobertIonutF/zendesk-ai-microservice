@@ -6,8 +6,9 @@ const logger = require('../common/utils/logger');
  */
 function validateConfig() {
   const useMockAI = process.env.USE_MOCK_AI === 'true';
+  const zendeskDisabled = process.env.ZENDESK_ENABLED === 'false';
   
-  if (!useMockAI) {
+  if (!useMockAI && !zendeskDisabled) {
     logger.info('Production mode detected - validating API credentials');
     
     if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === 'your_openai_api_key_here') {
@@ -15,16 +16,18 @@ function validateConfig() {
     }
     
     if (!process.env.ZENDESK_SUBDOMAIN || process.env.ZENDESK_SUBDOMAIN === 'your_subdomain') {
-      throw new Error('ZENDESK_SUBDOMAIN is required when USE_MOCK_AI=false');
+      throw new Error('ZENDESK_SUBDOMAIN is required when USE_MOCK_AI=false and Zendesk integration is enabled');
     }
     
     if (!process.env.ZENDESK_EMAIL || process.env.ZENDESK_EMAIL === 'your_email@example.com') {
-      throw new Error('ZENDESK_EMAIL is required when USE_MOCK_AI=false');
+      throw new Error('ZENDESK_EMAIL is required when USE_MOCK_AI=false and Zendesk integration is enabled');
     }
     
     if (!process.env.ZENDESK_API_TOKEN || process.env.ZENDESK_API_TOKEN === 'your_api_token_here') {
-      throw new Error('ZENDESK_API_TOKEN is required when USE_MOCK_AI=false');
+      throw new Error('ZENDESK_API_TOKEN is required when USE_MOCK_AI=false and Zendesk integration is enabled');
     }
+  } else if (zendeskDisabled) {
+    logger.info('Zendesk integration disabled via ZENDESK_ENABLED=false');
   }
   
   logger.info('✅ Configuration validated successfully');
@@ -56,11 +59,15 @@ const config = {
       model: process.env.OPENAI_MODEL || 'gpt-3.5-turbo',
       maxTokens: parseInt(process.env.OPENAI_MAX_TOKENS) || 300,
       timeout: parseInt(process.env.OPENAI_TIMEOUT_MS) || 15000,
+      temperature: process.env.OPENAI_TEMPERATURE !== undefined
+        ? parseFloat(process.env.OPENAI_TEMPERATURE)
+        : undefined,
     }
   },
   
   // Zendesk Configuration
   zendesk: {
+    enabled: process.env.ZENDESK_ENABLED !== 'false',
     subdomain: process.env.ZENDESK_SUBDOMAIN,
     email: process.env.ZENDESK_EMAIL,
     apiToken: process.env.ZENDESK_API_TOKEN,

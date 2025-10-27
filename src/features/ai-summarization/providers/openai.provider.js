@@ -19,23 +19,28 @@ class OpenAIProvider {
     logger.debug('Calling OpenAI API');
 
     try {
+      const requestBody = {
+        model: this.config.model,
+        messages: [
+          {
+            role: 'system',
+            content: 'You are a helpful assistant that summarizes customer support tickets concisely. Provide actionable insights and key points.'
+          },
+          {
+            role: 'user',
+            content: `Please summarize this support ticket:\n\n${text}`
+          }
+        ],
+        max_completion_tokens: this.config.maxTokens
+      };
+
+      if (typeof this.config.temperature === 'number' && !Number.isNaN(this.config.temperature)) {
+        requestBody.temperature = this.config.temperature;
+      }
+
       const response = await axios.post(
         'https://api.openai.com/v1/chat/completions',
-        {
-          model: this.config.model,
-          messages: [
-            {
-              role: 'system',
-              content: 'You are a helpful assistant that summarizes customer support tickets concisely. Provide actionable insights and key points.'
-            },
-            {
-              role: 'user',
-              content: `Please summarize this support ticket:\n\n${text}`
-            }
-          ],
-          max_tokens: this.config.maxTokens,
-          temperature: 0.7
-        },
+        requestBody,
         {
           headers: {
             'Authorization': `Bearer ${this.config.apiKey}`,
