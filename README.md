@@ -314,6 +314,7 @@ zendesk-ai-microservice/
 ├── ARCHITECTURE.md                       # 🔴 Architecture documentation
 ├── SECURITY.md                           # Security documentation
 ├── DEPLOYMENT.md                         # Deployment guide
+├── LEGAL.md                              # ⚖️ Legal & usage restrictions
 └── QUICKSTART.md                         # Quick start guide
 ```
 
@@ -339,6 +340,8 @@ zendesk-ai-microservice/
 ## 📝 License
 
 ISC
+
+⚠️ **IMPORTANT**: See [LEGAL.md](LEGAL.md) for usage restrictions and licensing terms. This project is restricted to interview purposes only.
 
 ## 👨‍💻 Author
 
