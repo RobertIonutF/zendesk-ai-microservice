@@ -52,10 +52,21 @@ class ZendeskService {
    * Check if Zendesk integration is configured
    */
   isConfigured() {
+    // Placeholder values that indicate unconfigured credentials
+    const placeholders = [
+      'your_subdomain',
+      'your_email@example.com',
+      'your_api_token_here',
+      'your_openai_api_key_here'
+    ];
+
     return config.zendesk.enabled && Boolean(
       config.zendesk.subdomain &&
       config.zendesk.email &&
-      config.zendesk.apiToken
+      config.zendesk.apiToken &&
+      !placeholders.includes(config.zendesk.subdomain) &&
+      !placeholders.includes(config.zendesk.email) &&
+      !placeholders.includes(config.zendesk.apiToken)
     );
   }
 }
