@@ -1,0 +1,7 @@
+{
+  "ticket": {
+    "id": 12345,
+    "title": "Customer having login issues",
+    "description": "User reports being unable to log in after password reset. Error message: 'Invalid credentials'. Customer has tried multiple browsers (Chrome, Firefox, Safari) and cleared cache. The issue started yesterday after they completed a password reset. Their username is john.doe@example.com. This is affecting their ability to access the customer dashboard and they need urgent assistance."
+  }
+}
